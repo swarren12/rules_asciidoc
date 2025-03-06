@@ -1,0 +1,6 @@
+#
+# .bazelignore - Ignored directories
+#
+
+.idea
+out

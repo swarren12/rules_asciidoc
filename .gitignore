@@ -1,0 +1,12 @@
+# Bazel / IDEA stuff
+.idea/
+bazel-bin
+bazel-out
+bazel-rules_asciidoc
+bazel-testlogs
+out/
+*.iml
+
+# Logs
+logs
+*.log

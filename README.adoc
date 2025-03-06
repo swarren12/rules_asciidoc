@@ -1,0 +1,41 @@
+<!--
+  ~~ README.adoc - Hello, curious person ^_^
+  -->
+
+## `rules_asciidoc` - Compile ASCIIDoc files using Bazel
+
+Bazel rules for processing ASCIIDoc files.
+
+### Usage
+
+#### Bzlmod
+
+```python
+# MODULE.bazel
+bazel_dep(name = "rules_asciidoc", version="2026.1", dev_dependency = True)
+```
+
+#### `asciidoc_document`
+
+```python
+# BUILD.bazel
+load("@rules_asciidoc//asciidoc:asciidoc.bzl", "asciidoc_document")
+
+asciidoc_document(
+    name = "document",
+    main = "index.adoc",
+    srcs = glob(["*.adoc"]).
+    format = "pdf"
+)
+
+```
+
+### To-do List
+
+- Do not depend on a system-install of Ruby
+- Support different backends, e.g. PDF
+
+### Things to test
+
+- Everything ... with automated tests?
+

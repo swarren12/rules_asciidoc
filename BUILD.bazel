@@ -1,0 +1,12 @@
+#
+# BUILD.bazel - root
+#
+
+load("//asciidoc:asciidoc.bzl", "asciidoc_document")
+
+asciidoc_document(
+    name = "README",
+    srcs = ["README.adoc"],
+    main = "README.adoc",
+    format = "html",
+)

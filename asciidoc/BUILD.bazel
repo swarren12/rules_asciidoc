@@ -1,0 +1,5 @@
+#
+# BUILD.bazel - ASCIIDoc BUILD file
+#
+
+package(default_visibility = ["//visibility:public"])
