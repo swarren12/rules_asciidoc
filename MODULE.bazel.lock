@@ -217,22 +217,6 @@
   },
   "selectedYankedVersions": {},
   "moduleExtensions": {
-    "//asciidoc:extension.bzl%asciidoc": {
-      "general": {
-        "bzlTransitiveDigest": "4+ediyFQd3nQiJco6A29r494to/fCjAeZaAngANovvM=",
-        "usagesDigest": "OP183TJ2K6tzCKSgg+TGZeiDotUY5cEDt84OBAlJnK4=",
-        "recordedInputs": [],
-        "generatedRepoSpecs": {
-          "asciidoc": {
-            "repoRuleId": "@@//asciidoc/private:repository.bzl%asciidoc_repository",
-            "attributes": {
-              "version": "2.0.26",
-              "integrity": "sha256-JcIrk0vAriRI8tc9Sy66DFngUhz16JP7CwrVSkYb8GY="
-            }
-          }
-        }
-      }
-    },
     "@@pybind11_bazel+//:internal_configure.bzl%internal_configure_extension": {
       "general": {
         "bzlTransitiveDigest": "06cynZ1bCvvy8zHPrrDlXq+Z68xmjctHpfFxi+zEpJY=",

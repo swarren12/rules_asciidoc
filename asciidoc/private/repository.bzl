@@ -2,8 +2,9 @@
 # repository.bzl - Create a new ASCIIDoc repository
 #
 
-DEFAULT_VERSION = "2.0.26"
-DEFAULT_VERSION_INTEGRITY = "sha256-JcIrk0vAriRI8tc9Sy66DFngUhz16JP7CwrVSkYb8GY="
+_DEFAULT_VERSION = "2.0.26"
+_DEFAULT_VERSION_INTEGRITY = "sha256-JcIrk0vAriRI8tc9Sy66DFngUhz16JP7CwrVSkYb8GY="
+
 BASE_URL = "https://github.com/asciidoctor/asciidoctor/archive/refs/tags/v{version}.tar.gz"
 
 def _asciidoc_repository(repository_ctx):
@@ -13,9 +14,10 @@ def _asciidoc_repository(repository_ctx):
     version = repository_ctx.attr.version
     integrity = repository_ctx.attr.integrity
 
-    if version == None:
-        version = DEFAULT_VERSION
-        integrity = integrity or DEFAULT_VERSION_INTEGRITY
+
+    if version == None or len(version) == 0:
+        version = _DEFAULT_VERSION
+        integrity = integrity if integrity != None and len(integrity) > 0 else _DEFAULT_VERSION_INTEGRITY
 
     result = repository_ctx.download_and_extract(
         url = BASE_URL.format(version = version),
@@ -52,7 +54,7 @@ toolchain(
       "@platforms//cpu:x86_64",
   ],
   toolchain = ":asciidoc",
-  toolchain_type = "@rules_asciidoc//toolchain:toolchain_type",
+  toolchain_type = "@rules_asciidoc//toolchain:asciidoc",
   visibility = ["//visibility:public"],
 )
 """

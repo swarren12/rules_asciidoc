@@ -9,12 +9,15 @@ def _asciidoc_impl(module_ctx):
     """Fetches and configures the required ASCIIDoc toolchains."""
 
     default_toolchain = None
+    extra_toolchains = []
     for mod in module_ctx.modules:
         for toolchain in mod.tags.toolchain:
             if toolchain.is_default:
                 if default_toolchain:
                     fail("Multiple default ASCIIDoc toolchains are not allowed.")
                 default_toolchain = toolchain
+            else:
+                extra_toolchains.append(toolchain)
 
     if default_toolchain:
         asciidoc_repository(
@@ -22,15 +25,20 @@ def _asciidoc_impl(module_ctx):
             version = default_toolchain.version,
             integrity = default_toolchain.integrity,
         )
+    elif len(extra_toolchains) == 0:
+        asciidoc_repository(name = "asciidoc")
 
-    for mod in module_ctx.modules:
-        for toolchain in mod.tags.toolchain:
-            if not toolchain.is_default:
-                asciidoc_repository(
-                    name = "asciidoctor_{}".format(toolchain.version),
-                    version = toolchain.version,
-                    integrity = toolchain.integrity,
-                )
+    [
+        asciidoc_repository(
+            name = "asciidoctor_{}".format(toolchain.version),
+            version = toolchain.version,
+            integrity = toolchain.integrity,
+        )
+        for toolchain
+        in extra_toolchains
+    ]
+
+    return module_ctx.extension_metadata(reproducible = True)
 
 _toolchain = tag_class(
     attrs = {

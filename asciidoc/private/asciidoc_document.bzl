@@ -16,7 +16,7 @@ def _asciidoc_doc(ctx):
     output = ctx.actions.declare_file("%s.%s" % (ctx.attr.name, ctx.attr.format))
     backend = FORMAT_TO_BACKEND_MAP[ctx.attr.format]
 
-    asciidoc = ctx.toolchains["//toolchain:toolchain_type"].asciidoc
+    asciidoc = ctx.toolchains["//toolchain:asciidoc"].asciidoc
     tools = depset([asciidoc.bin], transitive = [depset(asciidoc.files)])
 
     args = ctx.actions.args()
@@ -60,7 +60,7 @@ asciidoc_document = rule(
             default = False,
         ),
     },
-    toolchains = ["//toolchain:toolchain_type"],
+    toolchains = ["//toolchain:asciidoc"],
 )
 
 #
