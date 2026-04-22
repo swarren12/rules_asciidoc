@@ -13,7 +13,14 @@ bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "aspect_bazel_lib", version = "2.22.5", dev_dependency = True)
 
 asciidoc_dev = use_extension("//asciidoc:extension.bzl", "asciidoc", dev_dependency = True)
-asciidoc_dev.toolchain(version = "2.0.26", integrity = "sha256-JcIrk0vAriRI8tc9Sy66DFngUhz16JP7CwrVSkYb8GY=")
+asciidoc_dev.toolchain(
+    version = "2.0.26",
+    integrity = "sha256-JcIrk0vAriRI8tc9Sy66DFngUhz16JP7CwrVSkYb8GY=",
+    epub_version = "2.3.0",
+    epub_integrity = "sha256-v52e/iCJVLAB8gYlk94bPjGQdgq9Et1KB8pM3H26HYo=",
+    pdf_version = "2.3.24",
+    pdf_integrity = "sha256-wv0Ox0kqrKkphdJv6LQmC7LR2hSKLyFdz4R3QW2UK1g=",
+)
 use_repo(asciidoc_dev, "asciidoc")
 
 register_toolchains("@asciidoc//:toolchain", dev_dependency = True)

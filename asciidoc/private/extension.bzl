@@ -24,6 +24,10 @@ def _asciidoc_impl(module_ctx):
             name = "asciidoc",
             version = default_toolchain.version,
             integrity = default_toolchain.integrity,
+            epub_version = toolchain.epub_version,
+            epub_integrity = toolchain.epub_integrity,
+            pdf_version = toolchain.pdf_version,
+            pdf_integrity = toolchain.pdf_integrity,
         )
     elif len(extra_toolchains) == 0:
         asciidoc_repository(name = "asciidoc")
@@ -33,6 +37,10 @@ def _asciidoc_impl(module_ctx):
             name = "asciidoctor_{}".format(toolchain.version),
             version = toolchain.version,
             integrity = toolchain.integrity,
+            epub_version = toolchain.epub_version,
+            epub_integrity = toolchain.epub_integrity,
+            pdf_version = toolchain.pdf_version,
+            pdf_integrity = toolchain.pdf_integrity,
         )
         for toolchain
         in extra_toolchains
@@ -44,6 +52,10 @@ _toolchain = tag_class(
     attrs = {
         "version": attr.string(mandatory = False),
         "integrity": attr.string(mandatory = False),
+        "epub_version": attr.string(mandatory = False),
+        "epub_integrity": attr.string(mandatory = False),
+        "pdf_version": attr.string(mandatory = False),
+        "pdf_integrity": attr.string(mandatory = False),
         "is_default": attr.bool(default = True),
     },
 )

@@ -5,8 +5,41 @@
 load("//asciidoc:asciidoc.bzl", "asciidoc_document")
 
 asciidoc_document(
-    name = "README",
+    name = "html",
     srcs = ["README.adoc"],
     main = "README.adoc",
     format = "html",
+#     out = "README.html",
+)
+
+asciidoc_document(
+    name = "man",
+    srcs = ["README.adoc"],
+    main = "README.adoc",
+    format = "man",
+    out = "README.man",
+)
+
+asciidoc_document(
+    name = "docbook",
+    srcs = ["README.adoc"],
+    main = "README.adoc",
+    format = "docbook",
+    out = "README.docbook",
+)
+
+asciidoc_document(
+    name = "epub",
+    srcs = ["README.adoc"],
+    main = "README.adoc",
+    format = "epub",
+    out = "README.epub",
+)
+
+asciidoc_document(
+    name = "pdf",
+    srcs = ["README.adoc"],
+    main = "README.adoc",
+    format = "pdf",
+    out = "README.pdf",
 )
