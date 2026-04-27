@@ -1,7 +1,7 @@
 #
 # asciidoc_document.bzl - ASCIIDoc document rule
 #
-"""ASCIIDoc Document Rule"""
+""" ASCIIDoc Document Rule """
 
 FORMAT_TO_BACKEND_MAP = {
     "html": "html5",
@@ -25,20 +25,27 @@ def _asciidoc_doc(ctx):
         output_filename = "{name}.{ext}".format(name = appropriate_name, ext = format)
         output = ctx.actions.declare_file(output_filename)
 
-    asciidoc = ctx.toolchains["//toolchain:asciidoc"].asciidoc
-    tools = depset([asciidoc.bin], transitive = [depset(asciidoc.files)])
+    ruby = ctx.toolchains["@rules_ruby//ruby:toolchain_type"]
+    ruby_exec = ruby.ruby.path
 
-    asciidoctor_exec = asciidoc.bin.path
-    args = ctx.actions.args()
+    asciidoc = ctx.toolchains["//asciidoc:toolchain_type"]
+    asciidoctor_exec = asciidoc.asciidoc.bin
+    asciidoc_backend = backend
+
     if format == "epub":
-        if asciidoc.epub_bin == None:
+        if asciidoc.asciidoc.epub_bin == None:
             fail("epub support not enabled; set `epub_version` in `asciidoctor.toolchain()`")
-        asciidoctor_exec = asciidoc.epub_bin.path
+        asciidoctor_exec = asciidoc.asciidoc.epub_bin
+        asciidoc_backend = None
     elif format == "pdf":
-        if asciidoc.pdf_bin == None:
+        if asciidoc.asciidoc.pdf_bin == None:
             fail("pdf support not enabled; set `pdf_version` in `asciidoctor.toolchain()`")
-        asciidoctor_exec = asciidoc.pdf_bin.path
-    else:
+        asciidoctor_exec = asciidoc.asciidoc.pdf_bin
+        asciidoc_backend = None
+
+    args = ctx.actions.args()
+    args.add(asciidoctor_exec.path)
+    if asciidoc_backend != None:
         args.add("--backend", backend)
 
     args.add("--out-file", output.path)
@@ -46,12 +53,18 @@ def _asciidoc_doc(ctx):
         args.add("--verbose")
     args.add(main)
 
+    tools = depset([ruby.ruby, asciidoctor_exec], transitive = [depset(asciidoc.files), depset(ruby.files)])
+
     ctx.actions.run_shell(
-        command = "{cmd} $@".format(cmd = asciidoctor_exec),
+        command = "{ruby} $@".format(ruby = ruby_exec),
         arguments = [args],
         inputs = inputs,
         outputs = [output],
         tools = tools,
+        env = {
+            # Hack - work out if we can do this better?
+            "RUBYLIB": ":".join(asciidoc.requires),
+        },
         mnemonic = "ASCIIDoc",
         progress_message = "Processing ASCIIDoc document %s" % ctx.file.main.short_path,
     )
@@ -82,9 +95,9 @@ asciidoc_document = rule(
         "out": attr.output(
             doc = "Output filename",
             mandatory = False,
-        )
+        ),
     },
-    toolchains = ["//toolchain:asciidoc"],
+    toolchains = ["//asciidoc:toolchain_type", "@rules_ruby//ruby:toolchain_type"],
 )
 
 #

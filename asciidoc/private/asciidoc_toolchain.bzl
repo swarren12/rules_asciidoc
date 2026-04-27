@@ -1,6 +1,7 @@
 #
 # toolchain.bzl - ASCIIDoc toolchain provider
 #
+""" ASCIIDoc Toolchain """
 
 AsciidocInfo = provider(
     doc = "ASCIIDoc Toolchain",
@@ -9,7 +10,6 @@ AsciidocInfo = provider(
         "bin",
         "epub_bin",
         "pdf_bin",
-        "files",
     ],
 )
 
@@ -21,8 +21,9 @@ def _asciidoc_toolchain_impl(ctx):
             bin = ctx.file.bin,
             epub_bin = ctx.file.epub_bin,
             pdf_bin = ctx.file.pdf_bin,
-            files = ctx.files.files,
         ),
+        files = ctx.files.files,
+        requires = ctx.attr.requires,
     )
     return [toolchain_info]
 
@@ -32,6 +33,7 @@ asciidoc_toolchain = rule(
         "bin": attr.label(allow_single_file = True),
         "epub_bin": attr.label(allow_single_file = True),
         "pdf_bin": attr.label(allow_single_file = True),
-        "files": attr.label(allow_files = True),
+        "files": attr.label_list(allow_files = True),
+        "requires": attr.string_list(default = ["lib"]),
     },
 )

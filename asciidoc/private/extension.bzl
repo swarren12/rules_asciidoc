@@ -1,7 +1,7 @@
 #
 # extension.bzl - Bzlmod extension
 #
-"""Fetch and configure ASCIIDoc repositories."""
+""" Fetch and configure ASCIIDoc repositories. """
 
 load("//asciidoc/private:repository.bzl", "asciidoc_repository")
 
@@ -22,40 +22,31 @@ def _asciidoc_impl(module_ctx):
     if default_toolchain:
         asciidoc_repository(
             name = "asciidoc",
-            version = default_toolchain.version,
-            integrity = default_toolchain.integrity,
-            epub_version = toolchain.epub_version,
-            epub_integrity = toolchain.epub_integrity,
-            pdf_version = toolchain.pdf_version,
-            pdf_integrity = toolchain.pdf_integrity,
+            gemfile = default_toolchain.gemfile,
+            lockfile = default_toolchain.lockfile,
         )
     elif len(extra_toolchains) == 0:
-        asciidoc_repository(name = "asciidoc")
+        asciidoc_repository(
+            name = "asciidoc",
+            gemfile = "@rules_asciidoc//:Gemfile",
+            lockfile = "@rules_asciidoc//:Gemfile.lock",
+        )
 
     [
         asciidoc_repository(
             name = "asciidoctor_{}".format(toolchain.version),
-            version = toolchain.version,
-            integrity = toolchain.integrity,
-            epub_version = toolchain.epub_version,
-            epub_integrity = toolchain.epub_integrity,
-            pdf_version = toolchain.pdf_version,
-            pdf_integrity = toolchain.pdf_integrity,
+            gemfile = default_toolchain.gemfile,
+            lockfile = default_toolchain.lockfile,
         )
-        for toolchain
-        in extra_toolchains
+        for toolchain in extra_toolchains
     ]
 
     return module_ctx.extension_metadata(reproducible = True)
 
 _toolchain = tag_class(
     attrs = {
-        "version": attr.string(mandatory = False),
-        "integrity": attr.string(mandatory = False),
-        "epub_version": attr.string(mandatory = False),
-        "epub_integrity": attr.string(mandatory = False),
-        "pdf_version": attr.string(mandatory = False),
-        "pdf_integrity": attr.string(mandatory = False),
+        "gemfile": attr.label(allow_single_file = True),
+        "lockfile": attr.label(allow_single_file = True),
         "is_default": attr.bool(default = True),
     },
 )
