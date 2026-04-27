@@ -4,42 +4,46 @@
 
 load("//asciidoc:asciidoc.bzl", "asciidoc_document")
 
+exports_files([
+    "Gemfile",
+    "Gemfile.lock",
+])
+
 asciidoc_document(
     name = "html",
     srcs = ["README.adoc"],
-    main = "README.adoc",
     format = "html",
-#     out = "README.html",
+    main = "README.adoc",
 )
 
 asciidoc_document(
     name = "man",
     srcs = ["README.adoc"],
-    main = "README.adoc",
-    format = "man",
     out = "README.man",
+    format = "man",
+    main = "README.adoc",
 )
 
 asciidoc_document(
     name = "docbook",
     srcs = ["README.adoc"],
-    main = "README.adoc",
-    format = "docbook",
     out = "README.docbook",
+    format = "docbook",
+    main = "README.adoc",
 )
 
 asciidoc_document(
     name = "epub",
     srcs = ["README.adoc"],
-    main = "README.adoc",
-    format = "epub",
     out = "README.epub",
+    format = "epub",
+    main = "README.adoc",
 )
 
 asciidoc_document(
     name = "pdf",
     srcs = ["README.adoc"],
-    main = "README.adoc",
-    format = "pdf",
     out = "README.pdf",
+    format = "pdf",
+    main = "README.adoc",
 )
